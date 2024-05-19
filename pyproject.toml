@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "django-fuzzy-dates"
+version = "1.0.0"
+description = "Package to support nonspecific dates in form yyyy or yyyy.mm"
+authors = ["Noel Taylor <ntaylor@imagescape.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/ImaginaryLandscape/django-fuzzy-dates"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Web Environment",
+  "Framework :: Django",
+  "Framework :: Django :: 3.2",
+  "Framework :: Django :: 4.2",
+  "Framework :: Django :: 5.0",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+packages = [{include = "fuzzy_dates"}]
+include = [
+    "LICENSE",
+    "CHANGELOG.md",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = ">=4.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
