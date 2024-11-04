@@ -108,7 +108,7 @@ class FuzzyDate(str, metaclass=CustomMeta):
         return DATE_FIELD_SEPARATOR.join(
             [data_dict[el].lstrip(TRIM_CHAR) for el in DATE_FIELD_ORDER if data_dict[el]]
         )
-    
+
     def as_list(self):
         return [self.year, self.month, self.day]
 
@@ -122,7 +122,7 @@ class FuzzyDate(str, metaclass=CustomMeta):
         end_day = self.day or str(calendar.monthrange(int(end_year), 12)[1])
 
         return FuzzyDate(y=start_year, m=start_month, d=start_day), FuzzyDate(y=end_year, m=end_month, d=end_day)
-    
+
     @property
     def is_fuzzy(self):
         return self.day == ""
@@ -148,8 +148,12 @@ class FuzzyDateWidget(forms.MultiWidget):
 class FuzzyDateFormField(forms.MultiValueField):
 
     def __init__(self, *args, **kwargs):
-        kwargs.pop("max_length", None)  # max_length is here because FuzzyDateField (below) subclasses
-                                        # models.CharField, but it's not valid for forms.MultiValueField
+        # Remove default values of `models.Charfield`
+        # that are not valid for `forms.MultiValueField`:
+        # See `django/db/models/fields/__init__.py:Charfield.formfield`.
+        for k in ("max_length", "empty_value"):
+            kwargs.pop(k, None)
+
         fields = [
             forms.IntegerField(
                 min_value=1, required=DATE_FIELD_REQUIRED[el]
@@ -174,7 +178,7 @@ class FuzzyDateFormField(forms.MultiValueField):
 
 
 class FuzzyDateField(models.CharField):
-    
+
     def __init__(self, *args, **kwargs):
         kwargs["max_length"] = 10
         super().__init__(*args, **kwargs)
