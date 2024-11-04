@@ -92,7 +92,8 @@ class CustomMeta(type):
 # Fuzzy dates can then be sorted with non-fuzzy dates.
 class FuzzyDate(str, metaclass=CustomMeta):
     def __new__(cls, **kwargs):
-        return super().__new__(cls, "{y}.{m}.{d}".format(**kwargs))
+        fmt = DATE_FIELD_SEPARATOR.join(["{%s}" % v for v in DATE_FIELD_ORDER])
+        return super().__new__(cls, fmt.format(**kwargs))
 
     def __init__(self, **kwargs):
         self.year = kwargs["y"]
