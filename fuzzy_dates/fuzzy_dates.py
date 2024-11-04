@@ -137,7 +137,7 @@ class FuzzyDate(str, metaclass=CustomMeta):
     def get_end(self):
         year = self.year
         month = self.month or "12"
-        day = self.day or str(calendar.monthrange(int(year), 12)[1])
+        day = self.day or str(calendar.monthrange(int(year), int(month))[1])
         return FuzzyDate(y=year, m=month, d=day)
 
     def get_range(self):
