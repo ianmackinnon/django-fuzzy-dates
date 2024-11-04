@@ -112,16 +112,23 @@ class FuzzyDate(str, metaclass=CustomMeta):
     def as_list(self):
         return [self.year, self.month, self.day]
 
+    def get_start(self):
+        year = self.year
+        month = self.month or "01"
+        day = self.day or "01"
+        return FuzzyDate(y=year, m=month, d=day)
+
+    def get_end(self):
+        year = self.year
+        month = self.month or "12"
+        day = self.day or str(calendar.monthrange(int(year), 12)[1])
+        return FuzzyDate(y=year, m=month, d=day)
+
     def get_range(self):
-        start_year = self.year
-        start_month = self.month or "01"
-        start_day = self.day or "01"
-
-        end_year = self.year
-        end_month = self.month or "12"
-        end_day = self.day or str(calendar.monthrange(int(end_year), 12)[1])
-
-        return FuzzyDate(y=start_year, m=start_month, d=start_day), FuzzyDate(y=end_year, m=end_month, d=end_day)
+        return (
+            self.get_start(),
+            self.get_end(),
+        )
 
     @property
     def is_fuzzy(self):
