@@ -112,6 +112,22 @@ class FuzzyDate(str, metaclass=CustomMeta):
     def as_list(self):
         return [self.year, self.month, self.day]
 
+    def as_date(self, default=None):
+        non_fuzzy = None
+        if self.is_fuzzy:
+            if default is None:
+                return None
+            elif default == "start":
+                non_fuzzy = self.get_start()
+            elif default == "end":
+                non_fuzzy = self.get_end()
+            else:
+                raise ValueError("Valid values for `default` are `None`, `start`, and `end`.")
+        else:
+            non_fuzzy = self
+
+        return date(*[int(v) for v in non_fuzzy.as_list()])
+
     def get_start(self):
         year = self.year
         month = self.month or "01"
